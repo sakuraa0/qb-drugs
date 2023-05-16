@@ -42,7 +42,7 @@ local function OpenDealerShop()
     --local playerGang = playerData.gang.name
     --if you want a gang comment local playerjob and if playerjob, if u want a job comment a gang 
     -- change the job or the gang 
-    --if playergang == "none" then
+    --if playerGang == "none" then
     if playerJob == "unemployed" then
         GetClosestDealer()
         local repItems = {}
