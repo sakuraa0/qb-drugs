@@ -37,18 +37,30 @@ local function GetClosestDealer()
 end
 
 local function OpenDealerShop()
-    GetClosestDealer()
-    local repItems = {}
-    repItems.label = Config.Dealers[currentDealer]["name"]
-    repItems.items = {}
-    repItems.slots = 30
-    for k, _ in pairs(Config.Dealers[currentDealer]["products"]) do
-        if QBCore.Functions.GetPlayerData().metadata["dealerrep"] >= Config.Dealers[currentDealer]["products"][k].minrep then
-            repItems.items[k] = Config.Dealers[currentDealer]["products"][k]
+    local playerData = QBCore.Functions.GetPlayerData()
+    local playerJob = playerData.job.name
+    --local playerGang = playerData.gang.name
+    --if you want a gang comment local playerjob and if playerjob, if u want a job comment a gang 
+    -- change the job or the gang 
+    --if playergang == "none" then
+    if playerJob == "unemployed" then
+        GetClosestDealer()
+        local repItems = {}
+        repItems.label = Config.Dealers[currentDealer]["name"]
+        repItems.items = {}
+        repItems.slots = 30
+        for k, _ in pairs(Config.Dealers[currentDealer]["products"]) do
+            if playerData.metadata["dealerrep"] >= Config.Dealers[currentDealer]["products"][k].minrep then
+                repItems.items[k] = Config.Dealers[currentDealer]["products"][k]
+            end
         end
+        TriggerServerEvent("inventory:server:OpenInventory", "shop", "Dealer_"..Config.Dealers[currentDealer]["name"], repItems)
+    else
+        -- O trabalho do jogador não tem acesso à loja do revendedor
+        -- Adicione aqui o código que deve ser executado se o jogador não tiver acesso
     end
-    TriggerServerEvent("inventory:server:OpenInventory", "shop", "Dealer_"..Config.Dealers[currentDealer]["name"], repItems)
 end
+
 
 local function KnockDoorAnim(home)
     local knockAnimLib = "timetable@jimmy@doorknock@"
